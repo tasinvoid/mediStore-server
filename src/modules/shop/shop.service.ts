@@ -59,6 +59,7 @@ const getAllMedicinesDB = async ({
       price,
     });
   }
+  const total = await prisma.medicine.count()
   const res = await prisma.medicine.findMany({
     where: {
       AND: andConditions,
@@ -69,7 +70,7 @@ const getAllMedicinesDB = async ({
       [sortBy]: sortOrder,
     },
   });
-  return { data: res, pagination: { page, limit, skip, sortBy, sortOrder } };
+  return { data: res, pagination: { page, limit, skip, sortBy, sortOrder,total } };
 };
 const getMedicineByIdDB = async ({ medicineId }: { medicineId: string }) => {
   const data = await prisma.medicine.findUniqueOrThrow({

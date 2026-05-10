@@ -1,6 +1,6 @@
 import { prisma } from "../../lib/prisma";
 
-const getProfileDB = async ({ userId }) => {
+const getProfileDB = async ({ userId }:{userId:string}) => {
   const data = await prisma.user.findUnique({
     where: { id: userId },
     select: {
@@ -14,7 +14,15 @@ const getProfileDB = async ({ userId }) => {
   });
   return data;
 };
-const updateProfileDB = async ({userId, name, image}) => {
+const updateProfileDB = async ({
+  userId,
+  name,
+  image,
+}: {
+  userId:string;
+  name:string;
+  image:string;
+}) => {
   const updatedUser = await prisma.user.update({
     where: { id: userId },
     data: {
@@ -28,6 +36,6 @@ const updateProfileDB = async ({userId, name, image}) => {
       image: true,
     },
   });
-    return updatedUser
+  return updatedUser;
 };
 export const profileService = { getProfileDB, updateProfileDB };

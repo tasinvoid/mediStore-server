@@ -4,7 +4,7 @@ import { profileService } from "./profile.service";
 const getProfile = async (req: Request, res: Response, next: NextFunction) => {
   try {
     // Destructure or get params here
-    const userId = req.user?.id;
+    const userId = req.user?.id as string;
     const data = await profileService.getProfileDB({ userId });
 
     if (!data || (Array.isArray(data) && data.length === 0)) {
@@ -29,7 +29,7 @@ const updateProfile = async (
 ) => {
   try {
     // Destructure or get params here
-    const userId = req.user?.id;
+    const userId = req.user?.id as string;
     const { name, image } = req.body;
     const data = await profileService.updateProfileDB({ userId, name, image });
 

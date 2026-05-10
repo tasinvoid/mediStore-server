@@ -1,4 +1,4 @@
-import express, {  Router } from "express";
+import express, { Router } from "express";
 
 import { Role, UserStatus } from "../../../generated/prisma/enums";
 import { authMiddleware } from "../../utils/authMiddleware";
@@ -9,7 +9,17 @@ const router = express.Router();
 router.get(
   "/",
   authMiddleware(Role.CUSTOMER),
-  ordersController.getOrdersHistory
+  ordersController.getOrdersHistory,
 );
-router.get('/:id',authMiddleware(Role.CUSTOMER),ordersController.getOrderById)
+router.delete(
+  "/cancel/:id",
+  authMiddleware(Role.CUSTOMER),
+  ordersController.cancelOrder,
+);
+router.get(
+  "/:id",
+  authMiddleware(Role.CUSTOMER),
+  ordersController.getOrderById,
+);
+
 export const ordersRouter: Router = router;

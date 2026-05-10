@@ -74,13 +74,31 @@ const addCartItemsToOrderDB = async ({
             name: true,
             price: true,
             description: true,
+            stock:true
           },
         },
       },
     });
+    
     if (cartItems.length === 0) {
       throw new Error("No items in cart");
     }
+    for (const item of cartItems) {
+      if (item.medicine.stock < item.quantity) {
+        throw new Error(`${item.medicine.name} is not available on this quantity`)
+      }
+      await tx.medicine.update({
+        where: {
+          id:item.medicineId
+        },
+        data: {
+          stock: {
+            decrement:item.quantity
+          }
+        }
+      });
+    }
+    
     const totalPrice = cartItems.reduce((sum, item) => {
       return sum + (item.price * item.quantity)
     },0)
