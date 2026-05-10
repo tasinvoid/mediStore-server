@@ -8,12 +8,22 @@ const addItemsToCartDB = async ({
   userId: string;
   medicineId: string;
   quantity: number;
-}) => {
+  }) => {
+  const price = await prisma.medicine.findUnique({
+    where: {
+      id:medicineId
+    },
+    select: {
+      price:true
+    }
+  })
+  console.log(price);
   const data = await prisma.cartItems.create({
     data: {
       userId,
       medicineId,
       quantity,
+      price:price?.price as number,
     },
   });
   return data;
@@ -71,10 +81,14 @@ const addCartItemsToOrderDB = async ({
     if (cartItems.length === 0) {
       throw new Error("No items in cart");
     }
+    const totalPrice = cartItems.reduce((sum, item) => {
+      return sum + (item.price * item.quantity)
+    },0)
     const newOrder = await tx.order.create({
       data: {
         customerId: userId,
         address,
+        totalPrice,
         items: {
           create: cartItems.map((cartItem) => ({
             medicineId: cartItem.medicineId,

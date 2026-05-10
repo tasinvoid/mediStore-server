@@ -5,6 +5,8 @@ import cors from "cors"
 import { toNodeHandler } from "better-auth/node"
 import { auth } from "./lib/auth"
 import { cartRouter } from "./modules/cart/cart.router"
+import { ordersRouter } from "./modules/orders/order.router"
+import { profileRouter } from "./modules/profile/profile.router"
 export const app: Application = express()
 app.use(
   cors({
@@ -14,7 +16,9 @@ app.use(
 );
 app.use(express.json());
 app.all("/api/auth/*splat", toNodeHandler(auth));
-// app.use('/shop', shopRouter)
+
 app.use('/seller', sellerRouter)
 app.use('/shop', shopRouter)
-app.use('/cart',cartRouter)
+app.use('/cart', cartRouter)
+app.use('/orders', ordersRouter)
+app.use('/profile',profileRouter)

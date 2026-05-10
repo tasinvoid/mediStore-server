@@ -13,64 +13,62 @@ datasource db {
 }
 
 model User {
-  id            String     @id @default(uuid())
+  id            String      @id @default(uuid())
   name          String
-  email         String     @unique
-  emailVerified Boolean    @default(false)
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  roles         Role       @default(CUSTOMER)
-  status        UserStatus @default(ACTIVE)
+  email         String      @unique
+  emailVerified Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  roles         Role        @default(CUSTOMER)
+  status        UserStatus  @default(ACTIVE)
   orders        Order[]
   medicines     Medicine[]
   reviews       Reviews[]
-  cartItems CartItems[]
+  cartItems     CartItems[]
   image         String?
   sessions      Session[]
   accounts      Account[]
-
- 
 
   @@map("user")
 }
 
 model Medicine {
-  id           String           @id @default(uuid())
-  name         String
-  price        Int              @default(0)
-  stock        Int              @default(0)
-  description  String
-  sellerId     String
-  manufacturer String
-  category     MedicineCategory
-  orderItems   OrderItems[]
+  id            String           @id @default(uuid())
+  name          String
+  price         Int              @default(0)
+  stock         Int              @default(0)
+  description   String
+  sellerId      String
+  manufacturer  String
+  category      MedicineCategory
+  orderItems    OrderItems[]
   cartMedicines CartItems[]
-  seller       User             @relation(fields: [sellerId], references: [id])
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
-
+  seller        User             @relation(fields: [sellerId], references: [id])
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
 }
 
 model Order {
   id         String       @id @default(uuid())
   customerId String
+  totalPrice Int          @default(0)
   customer   User         @relation(fields: [customerId], references: [id])
   address    String
   items      OrderItems[]
   oderStatus OrderStatus  @default(PENDING)
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
-
 }
-model CartItems {
-  id String @id @default(uuid())
-  userId String
- 
-  user User @relation(fields: [userId], references: [id])
-  medicineId String
-  medicine Medicine @relation(fields: [medicineId], references: [id])
-  quantity Int @default(1)
 
+model CartItems {
+  id     String @id @default(uuid())
+  userId String
+
+  user       User     @relation(fields: [userId], references: [id])
+  medicineId String
+  medicine   Medicine @relation(fields: [medicineId], references: [id])
+  quantity   Int      @default(1)
+  price      Int      @default(0)
 }
 
 model OrderItems {
@@ -80,7 +78,6 @@ model OrderItems {
   orderId    String
   quantity   Int      @default(1)
   order      Order    @relation(fields: [orderId], references: [id])
-
 }
 
 model Reviews {
@@ -91,7 +88,6 @@ model Reviews {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
 
 enum Role {

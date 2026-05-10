@@ -21,7 +21,7 @@ declare global {
 
 router.post(
   "/medicines",
-  authMiddleware(Role.CUSTOMER),
+  authMiddleware(Role.SELLER),
   sellerController.manageMedicine,
 );
 export const sellerRouter: Router = router;
