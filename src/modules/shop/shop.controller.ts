@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { shopService } from "./shop.service";
 import { MedicineCategory } from "../../../generated/prisma/enums";
 import { error } from "node:console";
 import { paginationHelper } from "../../utils/paginationhelper";
 
-const getAllMedicines = async (req: Request, res: Response) => {
+const getAllMedicines = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const { search } = req.query;
     const { page, limit, skip, sortBy, sortOrder } = paginationHelper(req);
@@ -20,27 +20,25 @@ const getAllMedicines = async (req: Request, res: Response) => {
     const validPrice = typeof price === "string" ? parseInt(price) : undefined;
     const validManufacturer =
       typeof manufacturer === "string" ? manufacturer : undefined;
-    
 
-   
     const data = await shopService.getAllMedicinesDB({
       searchString,
       category: validCategory,
       price: validPrice,
       manufacturer: validManufacturer,
-        page,
-        limit,
-        skip,
-        sortBy,
-        sortOrder,
+      page,
+      limit,
+      skip,
+      sortBy,
+      sortOrder,
     });
     res.status(200).send({ data, error: null });
   } catch (error) {
     console.log(error);
-    res.status(400).send({ data: null, error });
+    next(error);
   }
 };
-const getMedicineById = async (req: Request, res: Response) => {
+const getMedicineById = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const medicineId = req.params.id as string;
     if (!medicineId) {
@@ -57,7 +55,7 @@ const getMedicineById = async (req: Request, res: Response) => {
     res.status(200).send({ data, error: null });
   } catch (error) {
     console.log(error);
-    res.status(404).send({ data: null, error });
+    next(error)
   }
 };
 export const shopController = { getAllMedicines, getMedicineById };

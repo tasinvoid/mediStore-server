@@ -3,7 +3,7 @@ import { error } from "node:console";
 import { cartService } from "./cart.service";
 import { prisma } from "../../lib/prisma";
 
-const addItemsToCart = async (req: Request, res: Response) => {
+const addItemsToCart = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const userId = req.user?.id as string;
     const medicineId = req.query.medicineId as string;
@@ -17,10 +17,14 @@ const addItemsToCart = async (req: Request, res: Response) => {
     res.status(200).send({ data, error: null });
   } catch (error) {
     console.log(error);
-    res.status(400).send({ data: null, error });
+    next(error);
   }
 };
-const getAllCartItems = async (req: Request, res: Response) => {
+const getAllCartItems = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const userId = req.user?.id as string;
     const data = await cartService.getAllCartItemsDB({ userId });
@@ -30,7 +34,7 @@ const getAllCartItems = async (req: Request, res: Response) => {
     res.status(200).send({ data, error: null });
   } catch (error) {
     console.log(error);
-    res.status(400).send({ data: null, error });
+    next(error);
   }
 };
 const addCartItemsToOrder = async (
@@ -39,9 +43,8 @@ const addCartItemsToOrder = async (
   next: NextFunction,
 ) => {
   try {
-    
     const userId = req.user?.id as string;
-    const  address = req.body.address as string;
+    const address = req.body.address as string;
     const data = await cartService.addCartItemsToOrderDB({ userId, address });
 
     res.status(200).json({

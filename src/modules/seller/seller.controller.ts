@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { sellerService } from "./seller.service";
 import { OrderStatus } from "../../../generated/prisma/enums";
 
-const manageMedicine = async (req: Request, res: Response) => {
+const manageMedicine = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const { name, price, stock, description, manufacturer, category } =
       req.body;
@@ -19,11 +19,11 @@ const manageMedicine = async (req: Request, res: Response) => {
     );
     res.status(200).send({ data, error: null });
   } catch (error) {
-    res.status(400).send({ error, data: null });
+    next(error);
   }
 };
 
-const updateMedicine = async (req: Request, res: Response) => {
+const updateMedicine = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const id = req.params.id as string;
     const sellerId = req.user?.id;
@@ -44,10 +44,10 @@ const updateMedicine = async (req: Request, res: Response) => {
       error: null,
     });
   } catch (error) {
-    res.status(400).send({ error, data: null });
+    next(error);
   }
 };
-const updateOrderStatus = async (req: Request, res: Response) => {
+const updateOrderStatus = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const { orderId, orderStatus } = req.body;
 
@@ -69,14 +69,11 @@ const updateOrderStatus = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     console.error("Order Update Error:", error);
-    res.status(500).send({
-      error: error.message || "something went wrong",
-      data: null,
-    });
+    next(error)
   }
 };
 
-const deleteMedicine = async (req: Request, res: Response) => {
+const deleteMedicine = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const id = req.params.id as string;
     const sellerId = req.user?.id;
@@ -89,10 +86,10 @@ const deleteMedicine = async (req: Request, res: Response) => {
       error: null,
     });
   } catch (error) {
-    res.status(400).send({ error, data: null });
+    next(error);
   }
 };
-const getSellerOrders = async (req: Request, res: Response) => {
+const getSellerOrders = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const sellerId = req.user?.id as string;
 
@@ -118,10 +115,7 @@ const getSellerOrders = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     console.error("Seller Order Fetch Error:", error);
-    res.status(400).send({
-      error: error.message || "something went wrong",
-      data: null,
-    });
+    next(error)
   }
 };
 const dashboard = async (req: Request, res: Response, next: NextFunction) => {

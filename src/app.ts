@@ -7,6 +7,8 @@ import { auth } from "./lib/auth"
 import { cartRouter } from "./modules/cart/cart.router"
 import { ordersRouter } from "./modules/orders/order.router"
 import { profileRouter } from "./modules/profile/profile.router"
+import { adminRouter } from "./modules/admin/admin.router"
+import { errorHandler } from "./utils/globalErrorHandler"
 export const app: Application = express()
 app.use(
   cors({
@@ -21,4 +23,6 @@ app.use('/seller', sellerRouter)
 app.use('/shop', shopRouter)
 app.use('/cart', cartRouter)
 app.use('/orders', ordersRouter)
-app.use('/profile',profileRouter)
+app.use('/profile', profileRouter)
+app.use('/admin', adminRouter)
+app.use(errorHandler)
