@@ -16,6 +16,9 @@ export const authMiddleware = (...roles: Role[]) => {
         console.log("Email not verified");
         return res.status(400).send({ message: "Email is not verified" });
       }
+      if (session.user.status === UserStatus.BANNED) {
+        return res.status(400).send({ message: "This User Is BANNED" });
+      }
       req.user = {
         name: session.user.name,
         email: session.user.email,

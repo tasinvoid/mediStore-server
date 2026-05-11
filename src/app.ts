@@ -9,6 +9,7 @@ import { ordersRouter } from "./modules/orders/order.router"
 import { profileRouter } from "./modules/profile/profile.router"
 import { adminRouter } from "./modules/admin/admin.router"
 import { errorHandler } from "./utils/globalErrorHandler"
+import notFound from "./utils/notFound"
 export const app: Application = express()
 app.use(
   cors({
@@ -26,3 +27,4 @@ app.use('/orders', ordersRouter)
 app.use('/profile', profileRouter)
 app.use('/admin', adminRouter)
 app.use(errorHandler)
+app.use(notFound)
