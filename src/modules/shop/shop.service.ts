@@ -1,5 +1,5 @@
-import { MedicineCategory } from "../../../generated/prisma/enums";
-import { MedicineWhereInput } from "../../../generated/prisma/models";
+import { MedicineCategory } from "@prisma/client";
+import { MedicineWhereInput } from "@prisma/client";
 import { prisma } from "../../lib/prisma";
 
 const getAllMedicinesDB = async ({

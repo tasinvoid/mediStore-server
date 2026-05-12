@@ -1,4 +1,4 @@
-import { UserStatus } from "../../../generated/prisma/enums";
+import { UserStatus } from "@prisma/client";
 import { prisma } from "../../lib/prisma";
 
 const getAllUsersDB = async ({

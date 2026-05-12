@@ -1,5 +1,5 @@
 import { fromNodeHeaders } from "better-auth/node";
-import { Role, UserStatus } from "../../generated/prisma/enums";
+import { Role, UserStatus } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import { auth } from "../lib/auth";
 export const authMiddleware = (...roles: Role[]) => {

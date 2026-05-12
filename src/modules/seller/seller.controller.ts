@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { sellerService } from "./seller.service";
-import { OrderStatus } from "../../../generated/prisma/enums";
+import { OrderStatus } from "@prisma/client";
 
 const manageMedicine = async (req: Request, res: Response,next:NextFunction) => {
   try {

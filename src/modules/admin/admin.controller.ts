@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { UserStatus } from "../../../generated/prisma/enums";
+import { UserStatus } from "@prisma/client";
 import { adminService } from "./admin.service";
 import { paginationHelper } from "../../utils/paginationhelper";
 

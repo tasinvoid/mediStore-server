@@ -5,7 +5,7 @@ import {
   PrismaClient,
   Role,
   UserStatus,
-} from "./../../generated/prisma/client";
+} from "@prisma/client";
 import { prisma } from "./prisma";
 import nodemailer from "nodemailer"
 

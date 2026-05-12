@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { shopService } from "./shop.service";
-import { MedicineCategory } from "../../../generated/prisma/enums";
+import { MedicineCategory } from "@prisma/client";
 import { error } from "node:console";
 import { paginationHelper } from "../../utils/paginationhelper";
 

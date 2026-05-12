@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response, Router } from "express";
 import { sellerController } from "./seller.controller";
-import { Role, UserStatus } from "../../../generated/prisma/enums";
+import { Role, UserStatus } from "@prisma/client";
 import { authMiddleware } from "../../utils/authMiddleware";
 
 const router = express.Router();

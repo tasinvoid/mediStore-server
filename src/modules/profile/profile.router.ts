@@ -1,6 +1,6 @@
 import express, {  Router } from "express";
 
-import { Role, UserStatus } from "../../../generated/prisma/enums";
+import { Role, UserStatus } from "@prisma/client";
 import { authMiddleware } from "../../utils/authMiddleware";
 import { profileController } from "./profile.controller";
 

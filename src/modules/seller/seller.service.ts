@@ -1,4 +1,4 @@
-import { MedicineCategory, OrderStatus } from "../../../generated/prisma/enums";
+import { MedicineCategory, OrderStatus } from "@prisma/client";
 import { prisma } from "../../lib/prisma";
 
 const manageMedicineDB = async (
