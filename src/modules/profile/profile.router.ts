@@ -1,8 +1,8 @@
 import express, {  Router } from "express";
 
 import { Role, UserStatus } from "@prisma/client";
-import { authMiddleware } from "../../utils/authMiddleware";
-import { profileController } from "./profile.controller";
+import { authMiddleware } from "../../utils/authMiddleware.js";
+import { profileController } from "./profile.controller.js";
 
 
 const router = express.Router();

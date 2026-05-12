@@ -1,5 +1,5 @@
 import { MedicineCategory, OrderStatus } from "@prisma/client";
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../lib/prisma.js";
 
 const manageMedicineDB = async (
   name: string,

@@ -1,5 +1,5 @@
 import { UserStatus } from "@prisma/client";
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../lib/prisma.js";
 
 const getAllUsersDB = async ({
   page,

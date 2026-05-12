@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { error } from "node:console";
-import { cartService } from "./cart.service";
-import { prisma } from "../../lib/prisma";
+import { cartService } from "./cart.service.js";
+import { prisma } from "../../lib/prisma.js";
 
 const addItemsToCart = async (req: Request, res: Response,next:NextFunction) => {
   try {

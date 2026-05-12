@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { profileService } from "./profile.service";
+import { profileService } from "./profile.service.js";
 
 const getProfile = async (req: Request, res: Response, next: NextFunction) => {
   try {

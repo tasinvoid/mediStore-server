@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { UserStatus } from "@prisma/client";
-import { adminService } from "./admin.service";
-import { paginationHelper } from "../../utils/paginationhelper";
+import { adminService } from "./admin.service.js";
+import { paginationHelper } from "../../utils/paginationhelper.js";
 
 const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {

@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response, Router } from "express";
-import { sellerController } from "./seller.controller";
+import { sellerController } from "./seller.controller.js";
 import { Role, UserStatus } from "@prisma/client";
-import { authMiddleware } from "../../utils/authMiddleware";
+import { authMiddleware } from "../../utils/authMiddleware.js";
 
 const router = express.Router();
 declare global {

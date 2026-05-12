@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { shopService } from "./shop.service";
+import { shopService } from "./shop.service.js";
 import { MedicineCategory } from "@prisma/client";
 import { error } from "node:console";
-import { paginationHelper } from "../../utils/paginationhelper";
+import { paginationHelper } from "../../utils/paginationhelper.js";
 
 const getAllMedicines = async (req: Request, res: Response,next:NextFunction) => {
   try {
