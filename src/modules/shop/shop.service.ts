@@ -1,5 +1,5 @@
 import { MedicineCategory } from "@prisma/client";
-import { MedicineWhereInput } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "../../lib/prisma";
 
 const getAllMedicinesDB = async ({
@@ -23,7 +23,7 @@ const getAllMedicinesDB = async ({
   sortBy: string;
   sortOrder: string;
 }) => {
-  const andConditions: MedicineWhereInput | MedicineWhereInput[] = [];
+  const andConditions: Prisma.MedicineWhereInput | Prisma.MedicineWhereInput[] = [];
   console.log(searchString, category, price, manufacturer);
   console.log(andConditions);
   if (searchString !== "") {
