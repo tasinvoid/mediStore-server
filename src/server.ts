@@ -1,4 +1,5 @@
-import { app } from "./app.js";
+
+import app from "./app.js";
 import { prisma } from "./lib/prisma.js";
 
 async function main() {
@@ -6,9 +7,7 @@ async function main() {
     try {
         await prisma.$connect()
         console.log("Connected to DB successfully");
-        app.get('/', (req,res) => {
-            res.send("server is running");
-        })
+       
         app.listen(port,() => {
             console.log(`mediStore server is running on port ${port}`);
         })
