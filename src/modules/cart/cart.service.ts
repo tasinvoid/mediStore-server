@@ -8,22 +8,22 @@ const addItemsToCartDB = async ({
   userId: string;
   medicineId: string;
   quantity: number;
-  }) => {
+}) => {
   const price = await prisma.medicine.findUnique({
     where: {
-      id:medicineId
+      id: medicineId,
     },
     select: {
-      price:true
-    }
-  })
+      price: true,
+    },
+  });
   console.log(price);
   const data = await prisma.cartItems.create({
     data: {
       userId,
       medicineId,
       quantity,
-      price:price?.price as number,
+      price: price?.price as number,
     },
   });
   return data;
@@ -59,9 +59,11 @@ const getAllCartItemsDB = async ({ userId }: { userId: string }) => {
 const addCartItemsToOrderDB = async ({
   userId,
   address,
+  initialRating,
 }: {
   userId: string;
   address: string;
+  initialRating: number;
 }) => {
   const result = await prisma.$transaction(async (tx) => {
     const cartItems = await tx.cartItems.findMany({
@@ -74,34 +76,59 @@ const addCartItemsToOrderDB = async ({
             name: true,
             price: true,
             description: true,
-            stock:true
+            stock: true,
+            sellerId: true,
           },
         },
       },
     });
-    
+
     if (cartItems.length === 0) {
       throw new Error("No items in cart");
     }
     for (const item of cartItems) {
       if (item.medicine.stock < item.quantity) {
-        throw new Error(`${item.medicine.name} is not available on this quantity`)
+        throw new Error(
+          `${item.medicine.name} is not available on this quantity`,
+        );
       }
       await tx.medicine.update({
         where: {
-          id:item.medicineId
+          id: item.medicineId,
         },
         data: {
           stock: {
-            decrement:item.quantity
-          }
-        }
+            decrement: item.quantity,
+          },
+        },
       });
     }
-    
+
     const totalPrice = cartItems.reduce((sum, item) => {
-      return sum + (item.price * item.quantity)
-    },0)
+      return sum + item.price * item.quantity;
+    }, 0);
+    if (initialRating) {
+      // শুধু rating প্যারামিটার পাস করলে
+      for (const item of cartItems) {
+        await tx.reviews.upsert({
+          where: {
+            customerId_medicineId: {
+              customerId: userId,
+              medicineId: item.medicineId,
+            },
+          },
+          update: {
+            rating: initialRating,
+          },
+          create: {
+            customerId: userId,
+            medicineId: item.medicineId,
+            sellerId: item.medicine.sellerId,
+            rating: initialRating,
+          },
+        });
+      }
+    }
     const newOrder = await tx.order.create({
       data: {
         customerId: userId,
@@ -115,7 +142,7 @@ const addCartItemsToOrderDB = async ({
         },
       },
     });
-    const removeFormCart = await tx.cartItems.deleteMany({
+    await tx.cartItems.deleteMany({
       where: {
         userId,
       },
@@ -124,6 +151,7 @@ const addCartItemsToOrderDB = async ({
   });
   return result;
 };
+
 export const cartService = {
   addItemsToCartDB,
   getAllCartItemsDB,

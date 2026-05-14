@@ -23,7 +23,8 @@ model User {
   status        UserStatus  @default(ACTIVE)
   orders        Order[]
   medicines     Medicine[]
-  reviews       Reviews[]
+  reviewsGiven  Reviews[] @relation("Given")
+  reviewsReceived Reviews[] @relation("Received")
   cartItems     CartItems[]
   image         String?
   sessions      Session[]
@@ -43,6 +44,7 @@ model Medicine {
   category      MedicineCategory
   orderItems    OrderItems[]
   cartMedicines CartItems[]
+  medicineReviews Reviews[]
   seller        User             @relation(fields: [sellerId], references: [id])
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
@@ -84,10 +86,17 @@ model Reviews {
   id         String @id @default(uuid())
   rating     Int    @default(0)
   customerId String
-  reviews    User   @relation(fields: [customerId], references: [id])
+  customer    User   @relation("Given",fields: [customerId], references: [id])
+  sellerId String?
+  seller User? @relation("Received", fields: [sellerId],references: [id] )
+  medicineId String?  
+  medicine   Medicine? @relation(fields: [medicineId], references: [id])
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  @@unique([customerId, medicineId])
+  @@unique([customerId, sellerId])
 }
 
 enum Role {

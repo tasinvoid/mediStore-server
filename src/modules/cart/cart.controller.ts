@@ -3,7 +3,11 @@ import { error } from "node:console";
 import { cartService } from "./cart.service.js";
 import { prisma } from "../../lib/prisma.js";
 
-const addItemsToCart = async (req: Request, res: Response,next:NextFunction) => {
+const addItemsToCart = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const userId = req.user?.id as string;
     const medicineId = req.query.medicineId as string;
@@ -45,7 +49,8 @@ const addCartItemsToOrder = async (
   try {
     const userId = req.user?.id as string;
     const address = req.body.address as string;
-    const data = await cartService.addCartItemsToOrderDB({ userId, address });
+    const initialRating = parseInt(req.body.initialRating) as number;
+    const data = await cartService.addCartItemsToOrderDB({ userId, address,initialRating });
 
     res.status(200).json({
       error: null,
@@ -55,8 +60,10 @@ const addCartItemsToOrder = async (
     next(error);
   }
 };
+
 export const cartController = {
   addItemsToCart,
   getAllCartItems,
   addCartItemsToOrder,
+  
 };
